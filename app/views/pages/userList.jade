@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			table.table.table-hover.table-bordered
+				thead
+					tr
+						th Name
+						th Password
+						th Role
+						//-th Edit
+						th Delte
+				tbody
+					each item in users
+						tr(class="item-id-#{item._id}")
+							td #{item.name}
+							td #{item.password}
+							td #{item.role}
+
+							//-td: a(target="_blank",href="../user/#{item._id}") View
+							//-td: a(target="_blank",href="../admin/update/user/#{item._id}") Edit
+							td 
+								button.btn.btn-danger.del-user(type="button", data-id="#{item._id}") Delete
+
+	script(src="/js/userList.js")

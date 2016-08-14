@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-md-8
+				iframe(width="854",height="480",src="#{movie.flash}",frameborder="0",allowfullscreen)
+				if comments.length>0	
+					.panel.panel-default
+						.panel-heading Comments
+						.panel-body
+							ul.media-list
+								each item in comments
+									li.media
+										a.pull-left(href="#")
+											img.media-object(src="/img/portrait.jpg")
+										.media-body
+											h4.media-heading #{item.from.name}
+												a.reply.pull-right.small(href="#comment", data-cid="#{item._id}", data-tid="#{item.from._id}", data-tname="#{item.from.name}") Reply
+											p #{item.content}
+											each reply in item.reply	
+												.media
+													a.pull-left(href="#")
+														img.media-object(src="/img/portrait.jpg")
+													.media-body
+														h4.media-heading #{reply.from.name} 
+															span.label.label-primary Reply: 
+															span &nbsp; #{reply.to.name}
+															a.reply.pull-right.small(href="#comment", data-cid="#{item._id}", data-tid="#{reply.from._id}", data-tname="#{reply.from.name}") Reply
+														p #{reply.content}
+
+									hr
+				#comment
+					form#commentForm(method="post", action="/comment/new")
+						input(type="hidden", name="comment[movie]", value="#{movie._id}")
+						if user
+							input(type="hidden", name="comment[user]", value="#{user._id}")
+						.form-group
+							textarea#inputContent.form-control(name="comment[content]", rows="3")
+
+						.form-group
+							if user
+								button.btn.btn-primary(type="submit") submit
+							else
+								a.btn.btn-primary(data-toggle="modal" data-target="#signin") LoginToComment
+							br
+							br
+							br
+					
+			.col-md-4
+				dl.dl-horizontal
+					dt Name
+					dd=movie.title
+					dt Director
+					dd=movie.director
+					dt Country
+					dd=movie.country
+					dt Language
+					dd=movie.language
+					dt Summary
+					dd=movie.summary
+					dt Category
+					dd=category.name
+		
+	script(src="/js/detail.js")				

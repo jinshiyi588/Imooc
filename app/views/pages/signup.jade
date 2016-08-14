@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-md-5
+				form(method="post", action="/admin/signup")
+					.modal-body
+						.form-group
+							label.control-label(for="inputTitle") Name
+							input#inputTitle.form-control(type="text", name="user[name]")
+						.form-group
+							label.control-label(for="inputTitle") Password
+							input#inputTitle.form-control(type="text", name="user[password]")
+					.modal-footer
+						.form-group
+							.col-sm-offset-2.col-sm-10
+								button.btn.btn-defalut(type="submit") submit

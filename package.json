@@ -1,0 +1,37 @@
+{
+  "name": "imooc",
+  "version": "0.0.1",
+  "description": "imooc mongo+nodejs+express+jade",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinshiyi588/Imooc.git"
+  },
+  "keywords": [
+    "imooc"
+  ],
+  "author": "jinshiyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jinshiyi588/Imooc/issues"
+  },
+  "homepage": "https://github.com/jinshiyi588/Imooc#readme",
+  "dependencies": {
+    "connect-busboy": "0.0.2",
+    "connect-mongo": "^1.3.2",
+    "express-session": "^1.14.0",
+    "node-uuid": "^1.4.7",
+    "nodemon": "^1.10.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-concurrent": "^2.3.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-nodemon": "^0.4.2"
+  }
+}

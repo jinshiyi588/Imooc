@@ -1,0 +1,25 @@
+{
+  "name": "Imooc",
+  "homepage": "https://github.com/jinshiyi588/Imooc",
+  "authors": [
+    "jinshiyi588 <jinshiyi588@163.com>"
+  ],
+  "description": "imooc v0.0.1",
+  "main": "app.js",
+  "keywords": [
+    "men"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

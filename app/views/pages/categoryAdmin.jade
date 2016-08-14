@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			form.form-horizontal(method="post", action="/category/new")
+				if(category._id)
+					input(type="hidden", name="category[_id]", value=category._id)
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") Category Name
+					.col-sm-9
+						input#inputTitle.form-control(type="text", name="category[name]", value=category.name)
+				.form-group
+					.col-sm-offset-2.col-sm-10
+						button.btn.btn-defalut(type="submit") submit
+				
+
+					

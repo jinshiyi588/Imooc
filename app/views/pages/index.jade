@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+	.container
+		h3
+			a(href="/admin/movie/list")
+				span.label.label-primary List
+		.row
+			each category in categories
+				.panel.panel-default 
+					.panel-heading 
+						h3
+							a(href="/result?p=0&cat=#{category._id}") #{category.name}
+					.panel-body
+						each item in category.movies
+							.col-md-3
+								.thumbnail
+									a(href="/movie/#{item._id}")
+										img(src="#{item.poster}", alt="#{item.title}")
+									.caption
+										h3 #{item.title}
+										p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") Watch Movie

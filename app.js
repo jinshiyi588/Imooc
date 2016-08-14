@@ -1,144 +1,68 @@
 var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
-var Movie = require('./models/movie');
 var _ = require('underscore');
 var port = 3000;
 var app = express();
 var serveStatic = require('serve-static');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var morgan = require('morgan');
+var busboy = require('connect-busboy'); 
 
-mongoose.connect('mongodb://localhost/imooc',function(err,db){
+var dbUrl='mongodb://localhost/imooc';
+
+
+mongoose.connect(dbUrl,function(err,db){
 	//assert.equal(null, err);
   	console.log("Connected correctly to server.");
   	//db.close();
 })
 
-app.set('views', './views/pages');
-app.set('view engine', 'jade');
-app.use(bodyParser.urlencoded());
-app.use(serveStatic('bower_components'));
+app.use(busboy());
+app.set('views', './app/views/pages');
+app.set('view engine', 'jade'); 
+app.use(bodyParser.urlencoded());  
+app.use(serveStatic('public')); // js files path
 app.listen(port);
 
-console.log('imooc started on port: '+ port);
-
-
-//route config
-app.get('/',function(req,res){
-	Movie.fetch(function(err, movies) {
-		if(err){
-			console.log(err);
-		}
-
-		res.render('index',{
-			title: 'imooc homepage',
-			movies: movies
-		})
+app.use(session({
+	secret: "imooc",
+	cookie: { maxAge: 1000*60*10 } ,
+	store: new MongoStore({
+		url: dbUrl,
+		collection: "sessions"
 	})
-})
+}));
 
-app.get('/admin/list',function(req,res){
+/*
+app.use(busboy({
+    limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB
+        immediate: true
+    }
+}));
+*/
+app.use(busboy({ immediate: true }));
 
-	Movie.fetch(function(err, movies) {
-		if(err){
-			console.log(err);
-		}
-
-		res.render('list',{
-		title: 'imooc list',
-		movies: movies
-		})
-	})
-
+// app.use(function(req, res, next){
+// 	var _user= req.session.user;
 	
-})
+// 	//console.log(_user);
+// 	app.locals.user= _user;
+	
+// 	next();
+// })
 
-app.get('/movie/:id',function(req,res){
-	var id = req.params.id;
-	Movie.findById(id, function(err, movie){
+if ('development' === app.get('env')) {
+  app.set('showStackError', true);
+  app.use(morgan('combined'));
 
-		res.render('detail',{
-			title: 'imooc detail',
-			movie: movie
-		})
-	})
-})
+  app.locals.pretty = true;
+ // mongoose.set('debug', true)
+}
 
-app.post('/admin/movie/new',function(req, res){
-	var id= req.body.movie._id;
-	var movieObj =req.body.movie;
-	var _movie
+require('./config/routes')(app);
 
-	if(id !== 'undefined'){
-
-		Movie.findById(id,function(err, movie){
-			if(err){
-				console.log(err);
-			}
-			_movie = _.extend(movie, movieObj);
-			_movie.save(function(err,movie){
-				if (err) {
-					console.log(err);
-				};
-				res.redirect('/movie/' + movie._id);
-
-			})
-
-
-		})
-	}else{
-
-		_movie =new Movie({
-			director: movieObj.director,
-			title: movieObj.title,
-			language: movieObj.language,
-			country: movieObj.country,
-			summary: movieObj.summary,
-			flash: movieObj.flash,
-			poster: movieObj.poster,
-			year: movieObj.year
-
-		})
-
-		_movie.save(function(err,movie){
-				if (err) {
-					console.log(err);
-				};
-				res.redirect('/movie/' + movie._id);
-
-			})
-	}
-
-});
-
-app.get('/admin/update/:id', function(req, res){
-	var id = req.params.id;
-	if(id){
-
-		Movie.findById(id, function(err, movie){
-			res.render('admin',{
-				title: 'imooc admin',
-				movie: movie
-
-			})
-		})
-	}
-
-})
-
-app.get('/admin/movie',function(req,res){
-
-	res.render('admin',{
-		title: 'imooc admin',
-		movie: {
-			title: '',
-			director: '',
-			flash: '',
-			poster: '',
-			language: '',
-			director: '',
-			country: '',
-			summary: ''
-		}
-	})
-})
+console.log('imooc started on port: '+ port);

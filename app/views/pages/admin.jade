@@ -1,9 +1,9 @@
 extends ../layout
 
 block content
-	.container
+	.container.margin-btm
 		.row
-			form.form-horizontal(method="post", action="/admin/movie/new", entype="multipart/form-data") 
+			form.form-horizontal(method="post", action="/admin/movie/new", enctype="multipart/form-data") 
 				if(movie._id)
 					input(type="hidden", name="movie[_id]", value="#{movie._id}")
 				.form-group
@@ -61,5 +61,3 @@ block content
 					.col-sm-offset-2.col-sm-10
 						button.btn.btn-defalut(type="submit") submit
 	script(src="/js/admin.js")		
-
-					

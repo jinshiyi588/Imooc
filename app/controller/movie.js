@@ -1,11 +1,13 @@
 var Movie = require('../models/movie');
 var Comment = require('../models/comment');
 var Category = require('../models/category');
-var fs= require('fs');
+//var fs= require('fs');
+var fs = require('fs');
 var path= require('path');
-var uuid = require('node-uuid')
+//var uuid = require('node-uuid')
 
 var _ = require('underscore');
+//var inspect = require('util').inspect;
 
 exports.list =function(req,res){
 
@@ -43,6 +45,10 @@ exports.delete = function(req,res){
 
 exports.detail = function(req,res){
 	var id = req.params.id;
+	Movie.update({_id:id}, {$inc: {pv: +1 }}, function(err){
+		console.log(err);
+	})
+
 	Movie.findById(id, function(err, movie){
 
 		Category.findById(movie.category, function(err, category){
@@ -64,14 +70,18 @@ exports.detail = function(req,res){
 	});
 }
 
-exports.save = function(req, res){
+exports.save = function(req, res ,next){
+	//console.log("req.body:"+req.body);
+	console.log(req.body);
+	console.log(req.file);
 	var id= req.body.movie._id;
 	var movieObj =req.body.movie;
 	var _movie;
 
-	if(req.poster){
-		movieObj.poster=req.poster;
+	if(req.file){
+		movieObj.poster="/upload/"+req.file.filename;
 	}	
+	console.log("movieObj.poster:"+movieObj.poster);
 
 	if(id){// update 
 
@@ -176,7 +186,6 @@ exports.save = function(req, res){
 
 }
 
-
 exports.showUpdate = function(req, res){
 	var id = req.params.id;
 	if(id){
@@ -212,30 +221,77 @@ exports.showAdd = function(req,res){
 
 }
 
-exports.uploadPoster = function(req,res,next){
+exports.showUpload = function(req,res){
+
+	
+	res.render('upload',{
+		title: 'imooc upload'
+	});
+	
+
+}
+
+
+/*exports.upload= function(req, resp) {
+  console.log(req.body, req.files);
+  // don't forget to delete all req.files when done
+  res.redirect("/");
+}*/
+
+exports.upload = function(req,res,next){
 	if (req.busboy) {
-		console.log("---enter busboy---");
-		var id = uuid.v1();
-		console.log(id);			
-		
-		var tmpUploadPath = path.join(__dirname, '../../', '/public/upload/' +id+'.jpg');
-		console.log("temp path:"+tmpUploadPath);
-
+		//console.log("---enter busboy---");
+		var fstream;
+		req.pipe(req.busboy);
+		console.log("---before enter busboy---");
+		//console.log("busboy:"+req.busboy);
+		var poster;
+		req.movie={};
 		req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-			console.log(fieldname);
-			console.log(filename);
-			console.log(file);
-			console.log(mimetype);
-			
-			file.pipe(fs.createWriteStream(tmpUploadPath));
-			
-		});
 
-		req.busboy.on('finish', function() {//处理完毕后的回调
-			req.poster=tmpUploadPath;
-			console.log("poster path:"+ req.poster);
-			next();    	
-		});
+            console.log ("filename: " + filename);
+            console.log ("fieldname: " + fieldname);
+            console.log ("encoding: " + encoding);
+            console.log ("mimetype: " + mimetype);
+
+            //Path where file will be uploaded with original filename
+            var timestamp = Date.now();
+      		var type = filename.split('.')[1];
+      		poster = timestamp + '.' + type;
+            var newPath = path.join(__dirname, '../../', '/public/upload/' + poster);
+            console.log("newPath:"+newPath);
+
+            fstream = fs.createWriteStream(newPath);
+            file.pipe(fstream);
+
+            fstream.on('close', function () {    
+                console.log("Upload Finished of " + filename);              
+                //res.redirect('/');           //where to go next
+            	
+            });
+        });
+        
+		req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+      		console.log('Field [' + fieldname + ']: value: ' + inspect(val));
+      		if(val){
+      			//var attr="title";
+	      		var attr=fieldname.substring(fieldname.indexOf("[")+1,fieldname.indexOf("]"));
+	      		console.log("attr:"+attr);
+	      		req.movie[attr]=inspect(val);
+	      	}
+    	});
+    
+    	req.busboy.on('finish', function() {
+      		//console.log('Done parsing form!');
+      		//res.writeHead(303, { Connection: 'close', Location: '/' });
+      		//res.end();
+      		//console.log("poster:"+poster);
+      		if(poster){
+      			req.movie.poster=poster;
+      		}
+      		console.log("movie:"+req.movie[title]);
+      		next();
+    	});
 	}
-	next();
+	
 }

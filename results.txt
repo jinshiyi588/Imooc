@@ -1,0 +1,16 @@
+imooc started on port: 3000
+
+[0m[0m
+[0m  <Unit Test>[0m
+[0m    Models User:[0m
+Connected correctly to server.
+[0m      Before Method Save[0m
+      [32m  ✓[0m[90m should begin without test user[0m
+[0m      User Save[0m
+      [32m  ✓[0m[90m should save without problems[0m
+      [32m  ✓[0m[90m cannot save user if user exist[0m
+      [32m  ✓[0m[90m should password be hashed correct[0m
+
+
+[92m [0m[32m 4 passing[0m[90m (96ms)[0m
+

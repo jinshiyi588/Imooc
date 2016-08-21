@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			form.form-horizontal(method="post", action="/admin/movie/new", enctype="multipart/form-data") 
+				if(movie._id)
+					input(type="hidden", name="movie[_id]", value="#{movie._id}")
+				.form-group
+					label.col-sm-3.control-label(for="inputDouban") DoubanId
+					.col-sm-9
+						input#inputDouban.form-control(type="text")
+				
+				.form-group
+					label.col-sm-3.control-label(for="inputTitle") Movie Name
+					.col-sm-9
+						input#inputTitle.form-control(type="text", name="movie[title]", value=movie.title)
+							
+				.form-group
+					label.col-sm-3.control-label(for="inputUpload") Poster Upload
+					.col-sm-9
+						input#inputUpload.form-control(type="file", name="posterUpload")
+
+				.form-group
+					.col-sm-offset-2.col-sm-10
+						button.btn.btn-defalut(type="submit") submit
+	script(src="/js/admin.js")		
+
+					

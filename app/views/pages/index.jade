@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-	.container
+	.container.margin-btm
 		h3
 			a(href="/admin/movie/list")
 				span.label.label-primary List
@@ -16,7 +16,9 @@ block content
 							.col-md-3
 								.thumbnail
 									a(href="/movie/#{item._id}")
+										
 										img(src="#{item.poster}", alt="#{item.title}")
+
 									.caption
 										h3 #{item.title}
 										p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") Watch Movie

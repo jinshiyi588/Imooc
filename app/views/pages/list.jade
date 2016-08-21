@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-	.container
+	.container.margin-btm
 		
 		h3
 			a(href="/admin/movie/showAdd")
@@ -15,6 +15,7 @@ block content
 						th Country
 						th Language
 						th Category
+						th PV
 						th View
 						th Edit
 						th Delte
@@ -26,6 +27,7 @@ block content
 							td #{item.country}
 							td #{item.language}
 							td #{item.category.name}
+							td #{item.pv}
 							td: a(target="_blank",href="/movie/#{item._id}") View
 							td: a(target="_blank",href="/admin/update/#{item._id}") Edit
 							td 

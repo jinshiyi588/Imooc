@@ -20,4 +20,4 @@ Download zip file.
 
 ## Tests
 
-I use _**grunt-mocha-test**_ tool to make auto test script.
+I use _**grunt-mocha-test**_ tool to run auto test script.

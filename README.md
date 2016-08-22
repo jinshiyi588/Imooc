@@ -1,11 +1,24 @@
-# Imooc
-node.js+express+jade+mongodb simple demo
+#Imooc
 
-This is a nodejs web APP.
+## Synopsis
 
-It uses nodejs web application framework -- express and NoSQL database -- mongodb.
+This is a **nodejs** web APP.
 
-It has these features:
+It uses nodejs web application framework -- express, NoSQL database -- mongodb and node template engine jade.
 
-1. home page: list all the category of the movies and no more than 8 movies under this category.
-2. admin function: administrator can add, update or delete a movie .
+It is a **movie comment** web site. We post the lasted movie infomation and the users can make comments about the movie after watching.
+
+## Motivation
+
+I love movie and I want to learn how to develop a web site by node.js
+
+## Installation
+
+Download zip file.
+{% highlight bash %}
+npm install
+{% endhighlight %}
+
+## Tests
+
+I use grunt-mocha-test tool to make auto test script

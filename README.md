@@ -14,7 +14,7 @@ I love movie and I want to learn how to develop a web site by node.js.
 
 ## Installation
 
-Download zip file.
+Download zip file. Change into the project folder and run:
 
     npm install
     grunt

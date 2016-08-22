@@ -17,6 +17,7 @@ I love movie and I want to learn how to develop a web site by node.js.
 Download zip file.
 
     npm install
+    grunt
 
 ## Tests
 
